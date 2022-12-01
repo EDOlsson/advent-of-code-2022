@@ -2,3 +2,7 @@ root = true
 
 [*]
 indent_size = 4
+
+[*.fsx]
+indent_style = space
+indent_size = 4
