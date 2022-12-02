@@ -58,3 +58,30 @@ let part1 = allInput
             |> Array.sum
 
 printfn "Part 1 %d" part1
+
+let mapMyInputPart2 opponent xyz =
+    match xyz with
+    | "X" -> match opponent with        // Player must lose
+             | Rock -> Scissors
+             | Paper -> Rock
+             | Scissors -> Paper
+    | "Y" -> opponent                   // Player must tie
+    | "Z" -> match opponent with        // Player must win
+             | Rock -> Paper
+             | Paper -> Scissors
+             | Scissors -> Rock
+    | _ -> failwith <| sprintf "Unknown game input %s" xyz
+
+let parseGameRoundFromInputPart2 (input : string) =
+    let values = input.Split(" ", System.StringSplitOptions.RemoveEmptyEntries)
+
+    let opponent = mapOpponentInput values[0]
+    let myInput = mapMyInputPart2 opponent values[1]
+    { Opponent = opponent; Player = myInput }
+
+let part2 = allInput
+            |> Array.map parseGameRoundFromInputPart2
+            |> Array.map calculateRoundScore
+            |> Array.sum
+
+printfn "Part 2 %d" part2
