@@ -24,3 +24,13 @@ let part1 = allInput
             |> Array.length
 
 printfn "Part 1 %d" part1
+
+let doSectionsOverlap (assignments : SectionList array) =
+    not (assignments[1].StartId > assignments[0].EndId || assignments[0].StartId > assignments[1].EndId)
+
+let part2 = allInput
+            |> Array.map parseAssignment
+            |> Array.filter doSectionsOverlap
+            |> Array.length
+
+printfn "Part 2 %d" part2
