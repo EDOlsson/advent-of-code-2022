@@ -104,10 +104,33 @@ let popFinalMessage (stacks : Stack<char> array) =
 let allInput = System.IO.File.ReadAllLines "./day05-input"
                |> Array.skip 10
 
+(*
 let finalCrates = allInput
-                             |> Array.map parseInstructionInput
-                             |> Array.fold folder [|stack1; stack2; stack3; stack4; stack5; stack6; stack7; stack8; stack9 |]
+                  |> Array.map parseInstructionInput
+                  |> Array.fold folder [|stack1; stack2; stack3; stack4; stack5; stack6; stack7; stack8; stack9 |]
 
 let part1 = popFinalMessage finalCrates
 
 printfn "Part 1 %s" part1
+*)
+
+//
+// To preserve order, use a temp stack & then pop and push to destination
+//
+let part2Folder (stacks : Stack<char> array) instruction =
+    let temp = new Stack<char>()
+    for x in 1..instruction.CrateCount do
+        stacks[instruction.SourceStack - 1].Pop() |> temp.Push
+
+    for x in 1..temp.Count do
+        temp.Pop() |> stacks[instruction.DestinationStack - 1].Push
+
+    stacks
+
+let finalCratesPart2 = allInput
+                        |> Array.map parseInstructionInput
+                        |> Array.fold part2Folder [|stack1; stack2; stack3; stack4; stack5; stack6; stack7; stack8; stack9 |]
+
+let part2 = popFinalMessage finalCratesPart2
+
+printfn "Part 2 %s" part2
